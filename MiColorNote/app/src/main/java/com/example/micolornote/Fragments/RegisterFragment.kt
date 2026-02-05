@@ -10,10 +10,9 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.micolornote.Models.Persona.Persona
 import com.example.micolornote.R
-import com.example.micolornote.databinding.FragmentLoginBinding
 import com.example.micolornote.databinding.FragmentRegisterBinding
 
-class Register : Fragment() {
+class RegisterFragment : Fragment() {
 
     // 1. Definimos el binding
     private var _binding: FragmentRegisterBinding? = null

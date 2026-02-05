@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- Imagen del usuario -->
+        <ImageView
+            android:id="@+id/imageViewPerfil"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Nombre -->
+        <TextView
+            android:id="@+id/tvNombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Nombre Usuario"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            app:layout_constraintStart_toEndOf="@id/imageViewPerfil"
+            app:layout_constraintTop_toTopOf="@id/imageViewPerfil"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0" />
+
+        <!-- DNI -->
+        <TextView
+            android:id="@+id/tvDni"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="DNI: 12345678"
+            android:textSize="14sp"
+            android:textColor="#444444"
+            app:layout_constraintStart_toEndOf="@id/imageViewPerfil"
+            app:layout_constraintTop_toBottomOf="@id/tvNombre"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0" />
+
+        <!-- Edad (opcional) -->
+        <TextView
+            android:id="@+id/tvEdad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Edad: 30"
+            android:textSize="14sp"
+            android:textColor="#444444"
+            app:layout_constraintStart_toEndOf="@id/imageViewPerfil"
+            app:layout_constraintTop_toBottomOf="@id/tvDni"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0" />
+
+        <!-- Botón detalle -->
+        <Button
+            android:id="@+id/btDetalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detalle"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewPerfil"
+            app:layout_constraintTop_toTopOf="@id/imageViewPerfil" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -1,24 +1,24 @@
 package com.example.micolornote.Fragments
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.micolornote.R
 import com.example.micolornote.databinding.FragmentLoginBinding
 
-class Login : Fragment() {
+class LoginFragment : Fragment() {
 
     // 1. Definimos el binding
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
     // 2. Definimos el ViewModel (como en tu ejemplo)
-    private val loginViewModel: LoginViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +55,17 @@ class Login : Fragment() {
         loginViewModel.personaLogueada.observe(viewLifecycleOwner) { persona ->
             if (persona != null) {
                 Toast.makeText(requireContext(), "Hola ${persona.nombre}", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.login_al_registro)
+                when {
+                    persona.esAdmin ->{
+                        findNavController().navigate(R.id.login_al_admin)
+                    }
+                    persona.esUsuario ->{
+                        findNavController().navigate(R.id.login_al_usuario)
+                    }
+                    else -> {
+                        Toast.makeText(requireContext(), "Rol no válido",Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
 

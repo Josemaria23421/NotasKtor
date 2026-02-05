@@ -7,20 +7,42 @@
 
     <fragment
         android:id="@+id/login"
-        android:name="com.example.micolornote.Fragments.Login"
+        android:name="com.example.micolornote.Fragments.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
+        <!--
+        VAMOS A EL REGISTRO
+        -->
         <action
             android:id="@+id/login_al_registro"
             app:destination="@id/register" />
+        <!--
+        VAMOS A EL ADMIN O USUARIO
+        -->
+        <action
+            android:id="@+id/login_al_admin"
+            app:destination="@id/adminFragment" />
+
+        <action
+            android:id="@+id/login_al_usuario"
+            app:destination="@id/usuarioFragment" />
     </fragment>
     <fragment
         android:id="@+id/register"
-        android:name="com.example.micolornote.Fragments.Register"
+        android:name="com.example.micolornote.Fragments.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/registro_al_login"
             app:destination="@id/login" />
     </fragment>
+    <fragment
+        android:id="@+id/adminFragment"
+        android:name="com.example.micolornote.Fragments.AdminFragment"
+        android:label="Admin" />
+
+    <fragment
+        android:id="@+id/usuarioFragment"
+        android:name="com.example.micolornote.Fragments.UserFragment"
+        android:label="Usuario" />
 </navigation>
