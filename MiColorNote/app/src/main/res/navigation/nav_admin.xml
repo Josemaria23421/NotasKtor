@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_admin"
+    app:startDestination="@id/adminFragment">
+
+    <fragment
+        android:id="@+id/adminFragment"
+        android:name="com.example.micolornote.Fragments.AdminFragment"
+        android:label="Usuarios" />
+
+<!--    <fragment-->
+<!--        android:id="@+id/crearUsuarioFragment"-->
+<!--        android:name="com.example.micolornote.Fragments.CrearUsuarioFragment"-->
+<!--        android:label="Crear Usuario" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/adminPerfil"-->
+<!--        android:name="com.example.micolornote.Fragments.PerfilFragment"-->
+<!--        android:label="Perfil" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/notas"-->
+<!--        android:name="com.example.micolornote.Fragments.NotasFragment"-->
+<!--        android:label="Notas" />-->
+
+</navigation>

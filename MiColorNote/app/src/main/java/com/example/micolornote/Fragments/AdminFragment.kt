@@ -20,6 +20,7 @@ class AdminFragment : Fragment(R.layout.fragment_admin) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         val rvUsuarios = view.findViewById<RecyclerView>(R.id.rvUsuarios)
         rvUsuarios.layoutManager = LinearLayoutManager(requireContext())
 
@@ -36,3 +37,4 @@ class AdminFragment : Fragment(R.layout.fragment_admin) {
         viewModel.cargarUsuarios()
     }
 }
+

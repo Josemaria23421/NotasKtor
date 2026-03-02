@@ -49,19 +49,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0" />
 
-        <!-- Edad (opcional) -->
-        <TextView
-            android:id="@+id/tvEdad"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Edad: 30"
-            android:textSize="14sp"
-            android:textColor="#444444"
-            app:layout_constraintStart_toEndOf="@id/imageViewPerfil"
-            app:layout_constraintTop_toBottomOf="@id/tvDni"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0" />
-
         <!-- Botón detalle -->
         <Button
             android:id="@+id/btDetalle"

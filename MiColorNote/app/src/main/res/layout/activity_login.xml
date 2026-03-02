@@ -14,26 +14,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Crea tu cuenta de usuario"
+            android:text="Ingresa tus credenciales para continuar"
             android:layout_marginBottom="32dp"/>
 
         <EditText
-            android:id="@+id/txtRegNombre"
+            android:id="@+id/txtDni"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nombre Completo"
-            android:inputType="textCapWords" />
-
-        <EditText
-            android:id="@+id/txtRegDni"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:hint="DNI"
             android:inputType="text" />
 
         <EditText
-            android:id="@+id/txtRegPassword"
+            android:id="@+id/txtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -41,18 +33,18 @@
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/btnRegistrar"
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="REGISTRAR" />
+            android:text="ENTRAR" />
 
         <Button
-            android:id="@+id/btnIrALogin"
+            android:id="@+id/btnIrARegistro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="¿Ya tienes cuenta? Inicia sesión" />
+            android:text="¿No tienes cuenta? Regístrate" />
 
     </LinearLayout>
 </ScrollView>

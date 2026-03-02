@@ -14,18 +14,35 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MiColorNote"
         android:usesCleartextTraffic="true">
+
+        <!-- Actividad principal: Login -->
         <activity
-            android:name=".HomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".Activities.LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MiColorNote">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <!-- Registro -->
+        <activity
+            android:name=".Activities.RegisterActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MiColorNote" />
+
+        <!-- Main de usuario -->
+        <activity
+            android:name=".Activities.UserMainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MiColorNote" />
+
+        <!-- Main de administrador -->
+        <activity
+            android:name=".Activities.AdminMainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MiColorNote" />
+
+    </application>
 </manifest>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_host_user"
+    app:startDestination="@id/user_notas">
+
+    <fragment
+        android:id="@+id/user_notas"
+        android:name="com.example.micolornote.Fragments.UserFragment"
+        android:label="Usuarios" />
+    <fragment
+        android:id="@+id/user_perfil"
+        android:name="userPerfil"
+        android:label="user_perfil">
+        <action
+            android:id="@+id/action_user_perfil_to_userFragment"
+            app:destination="@id/user_perfil" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_crear_nota"
+        android:name="com.example.micolornote.CrearNotaFragment"
+        android:label="CrearNotaFragment" />
+    <fragment
+        android:id="@+id/fragment_detalle_nota"
+        android:name="com.example.micolornote.Fragments.DetalleNotaFragment"
+        android:label="Detalle de Nota" />
+
+
+
+</navigation>

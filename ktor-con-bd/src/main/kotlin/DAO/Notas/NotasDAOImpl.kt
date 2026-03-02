@@ -4,12 +4,12 @@ import Helpers.Database
 import com.example.Modelos.Notas.Notas
 
 class NotasDAOImpl : NotasDAO {
-    override fun listarPorUsuario(usuarioId: Int): List<Notas> {
+    override fun listarPorUsuario(usuarioDNI: String): List<Notas> {
         val listaDeNotas = mutableListOf<Notas>()
-        val usuario = "SELECT * FROM NOTAS WHERE USUARIO_ID = ?"
+        val usuario = "SELECT * FROM NOTAS WHERE USUARIO_ID = (SELECT ID FROM USUARIOS WHERE DNI = ?)"
         Database.getConnection().use { connection ->
             connection?.prepareStatement(usuario).use { statement ->
-                statement?.setInt(1, usuarioId)
+                statement?.setString(1, usuarioDNI)
                 val rs = statement?.executeQuery()
 
                 while (rs?.next() == true) {
@@ -17,7 +17,7 @@ class NotasDAOImpl : NotasDAO {
                         Notas(
                             id = rs.getInt("id"),
                             titulo = rs.getString("titulo"),
-                            descripcionDeLaNota = rs.getString("descripcion_completa"),
+                            descripcion_completa = rs.getString("descripcion_completa"),
                             tipo = rs.getString("tipo"),
                             fecha = rs.getString("fecha"),
                             usuarioId = rs.getInt("usuario_id")
@@ -40,7 +40,7 @@ class NotasDAOImpl : NotasDAO {
                     return Notas(
                         id = rs.getInt("id"),
                         titulo = rs.getString("titulo"),
-                        descripcionDeLaNota = rs.getString("descripcion_completa"),
+                        descripcion_completa = rs.getString("descripcion_completa"),
                         tipo = rs.getString("tipo"),
                         fecha = rs.getString("fecha"),
                         usuarioId = rs.getInt("usuario_id")
@@ -51,25 +51,53 @@ class NotasDAOImpl : NotasDAO {
         return null
     }
 
-    override fun crearNota(nota: Notas): Int {
+    override fun crearNota(nota: Notas, dni: String): Int {
+        val obtenerUsuarioId = "SELECT id FROM usuarios WHERE dni = ?"
         val insertarNota = "INSERT INTO notas (titulo, descripcion_completa, tipo, fecha, usuario_id) VALUES (?, ?, ?, ?, ?)"
-        return try {
+        val obtenerUltimaNota = "SELECT MAX(id) as ultimo_id FROM notas WHERE usuario_id = ?"
+
+        try {
             Database.getConnection().use { connection ->
-                connection?.prepareStatement(insertarNota).use { statement ->
-                    statement?.setString(1, nota.titulo)
-                    statement?.setString(2, nota.descripcionDeLaNota)
-                    statement?.setString(3, nota.tipo)
-                    statement?.setString(4, nota.fecha)
-                    statement?.setInt(5, nota.usuarioId)
-                    val filasAfectadas = statement?.executeUpdate() ?: 0
-                    if (filasAfectadas > 0) 1 else -1
+
+                connection ?: return -1
+
+                val usuarioId = connection.prepareStatement(obtenerUsuarioId).use { ps ->
+                    ps.setString(1, dni)
+                    val rs = ps.executeQuery()
+                    if (rs.next()) rs.getInt("id") else null
+                }
+
+                if (usuarioId == null) {
+                    println("Usuario no encontrado")
+                    return -1
+                }
+
+                // Insertar nota
+                connection.prepareStatement(insertarNota).use { statement ->
+                    statement.setString(1, nota.titulo)
+                    statement.setString(2, nota.descripcion_completa)
+                    statement.setString(3, nota.tipo)
+                    statement.setString(4, nota.fecha)
+                    statement.setInt(5, usuarioId)
+                    statement.executeUpdate()
+                }
+
+                //Obtener el ID máximo de ese usuario
+                connection.prepareStatement(obtenerUltimaNota).use { ps ->
+                    ps.setInt(1, usuarioId)
+                    val rs = ps.executeQuery()
+                    if (rs.next()) {
+                        return rs.getInt("ultimo_id")
+                    }
                 }
             }
+
         } catch (e: Exception) {
             println("ERROR SQL AL CREAR NOTA: ${e.message}")
             e.printStackTrace()
-            -1
         }
+
+        return -1
     }
 
 
@@ -92,6 +120,21 @@ class NotasDAOImpl : NotasDAO {
         Database.getConnection().use { connection ->
             connection?.prepareStatement(borrarNota).use { statement ->
                 statement?.setInt(1, id)
+                val filas = statement?.executeUpdate() ?: 0
+                return filas > 0
+            }
+        }
+    }
+
+
+    //Tareas (notas que contienen una lista)
+    override fun insertarItemTarea(notaId: Int, nombre_item: String, estaFinalizado: Boolean): Boolean {
+        val sql = "INSERT INTO items_tarea (nota_id, nombre_item, esta_finalizado) VALUES (?, ?, ?)"
+        Database.getConnection().use { connection ->
+            connection?.prepareStatement(sql).use { statement ->
+                statement?.setInt(1, notaId)
+                statement?.setString(2, nombre_item)
+                statement?.setBoolean(3, estaFinalizado)
                 val filas = statement?.executeUpdate() ?: 0
                 return filas > 0
             }

@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/user_perfil"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="Perfil" />
+    <item
+        android:id="@+id/user_notas"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Notas" />
+    <item
+        android:id="@+id/user_configuracion"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="Configuración" />
+    <item
+        android:id="@+id/fragment_crear_nota"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Crear" />
+</menu>

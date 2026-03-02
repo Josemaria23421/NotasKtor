@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class Notas(
     val id : Int,
     val titulo: String,
-    @SerialName("descripcion") val descripcionDeLaNota: String,
+    val descripcion_completa: String,
     val tipo: String, //con esto definimos tareas o notasSimples
     val fecha: String,
     val usuarioId: Int    //id del usuario al que pertenece)

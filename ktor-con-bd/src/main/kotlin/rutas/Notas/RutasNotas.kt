@@ -1,6 +1,8 @@
 package com.example.rutas.Notas
 
 import com.example.DAO.Notas.NotasDAOImpl
+import com.example.Modelos.Notas.ActualizarNotaRequest
+import com.example.Modelos.Notas.CrearNotaRequest
 import com.example.Modelos.Notas.Notas
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
@@ -17,32 +19,55 @@ fun Route.rutasNotas() {
     val notasDAO = NotasDAOImpl()
 
     route("/notas") {
-        //crear una nota
-        post {
-            val nota = call.receive<Notas>()
-            val idGenerado = notasDAO.crearNota(nota)
 
-            if (idGenerado > 0) {
-                call.respond(HttpStatusCode.Created, idGenerado)
-            } else {
+        post {
+
+            val request = call.receive<CrearNotaRequest>()
+
+            val nota = Notas(
+                id = 0,
+                titulo = request.titulo,
+                descripcion_completa = request.descripcion_completa,
+                tipo = request.tipo,
+                fecha = request.fecha,
+                usuarioId = 0
+            )
+
+            val notaId = notasDAO.crearNota(nota, request.dni)
+
+            if (notaId <= 0) {
                 call.respond(HttpStatusCode.BadRequest, "No se pudo crear la nota")
+                return@post
             }
+
+            if (request.tipo == "TAREAS" && request.items != null) {
+                request.items.forEach { item ->
+                    notasDAO.insertarItemTarea(
+                        notaId = notaId,
+                        nombre_item = item.nombre,
+                        estaFinalizado = item.estaFinalizado
+                    )
+                }
+            }
+
+            call.respond(HttpStatusCode.Created, notaId)
         }
 
-        //conseguir las notas ed un usuario concreto
-        get("/usuario/{id}") {
-            val usuarioId = call.parameters["id"]?.toIntOrNull()
+        get("/usuario/{dni}") {
 
-            if (usuarioId == null) {
-                call.respond(HttpStatusCode.BadRequest, "ID inválido")
+            val dni = call.parameters["dni"]
+
+            if (dni == null) {
+                call.respond(HttpStatusCode.BadRequest, "DNI inválido")
                 return@get
             }
 
-            val notas = notasDAO.listarPorUsuario(usuarioId)
+            val notas = notasDAO.listarPorUsuario(dni)
             call.respond(notas)
         }
-        //conseguir una nota en especifico
+
         get("/{id}") {
+
             val id = call.parameters["id"]?.toIntOrNull()
 
             if (id == null) {
@@ -58,8 +83,9 @@ fun Route.rutasNotas() {
                 call.respond(HttpStatusCode.NotFound, "Nota no encontrada")
             }
         }
-        //modificar contenido de una nota
+
         put("/{id}") {
+
             val id = call.parameters["id"]?.toIntOrNull()
 
             if (id == null) {
@@ -67,9 +93,9 @@ fun Route.rutasNotas() {
                 return@put
             }
 
-            val contenido = call.receive<String>()
+            val contenido = call.receive<ActualizarNotaRequest>()
 
-            val ok = notasDAO.actualizarNotaTexto(id, contenido)
+            val ok = notasDAO.actualizarNotaTexto(id, contenido.contenido)
 
             if (ok) {
                 call.respond(HttpStatusCode.OK, "Nota actualizada")
@@ -77,8 +103,9 @@ fun Route.rutasNotas() {
                 call.respond(HttpStatusCode.NotFound, "Nota no encontrada")
             }
         }
-        //borrar una nota
+
         delete("/{id}") {
+
             val id = call.parameters["id"]?.toIntOrNull()
 
             if (id == null) {
@@ -95,5 +122,4 @@ fun Route.rutasNotas() {
             }
         }
     }
-
 }
