@@ -36,30 +36,60 @@ class LoginActivity : AppCompatActivity() {
         }
 
         // Observamos el LiveData del ViewModel
-        loginViewModel.personaLogueada.observe(this) { persona ->
-            persona?.let { navegarSegunRol(it) }
+        loginViewModel.personaLogueada.observe(this) { personaRecibida ->
+            if (personaRecibida != null) {
+                navegarSegunRol(personaRecibida)
+            }
         }
 
         loginViewModel.mensajeError.observe(this) { error ->
-            error?.let { Toast.makeText(this, it, Toast.LENGTH_SHORT).show() }
+            if (error != null) {
+                Toast.makeText(this, error, Toast.LENGTH_SHORT).show() }
         }
     }
 
     private fun navegarSegunRol(persona: Persona) {
         UsuarioHolder.dni = persona.dni
         UsuarioHolder.usuario = persona
-        Toast.makeText(this, "Hola ${persona.nombre}", Toast.LENGTH_SHORT).show()
 
-        if (persona.esAdmin){
-            val intent = Intent(this, AdminMainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }else if(persona.esUsuario){
-            val intent = Intent(this, UserMainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }else {
-            Toast.makeText(this, "Rol no válido", Toast.LENGTH_SHORT).show()
+        // CASO 1: Tiene AMBOS roles -> Preguntamos
+        if (persona.es_admin && persona.es_usuario) {
+            mostrarDialogoSeleccionRol(persona)
         }
+        // CASO 2: Solo es Admin
+        else if (persona.es_admin) {
+            irAAdmin()
+        }
+        // CASO 3: Solo es Usuario
+        else if (persona.es_usuario) {
+            irAUser()
+        }
+        else {
+            Toast.makeText(this, "No tienes roles asignados", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun mostrarDialogoSeleccionRol(persona: Persona) {
+        val opciones = arrayOf("Entrar como Administrador", "Entrar como Usuario")
+
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Selecciona un perfil")
+            .setItems(opciones) { _, which ->
+                when (which) {
+                    0 -> irAAdmin()
+                    1 -> irAUser()
+                }
+            }
+            .show()
+    }
+
+    private fun irAAdmin() {
+        startActivity(Intent(this, AdminMainActivity::class.java))
+        finish()
+    }
+
+    private fun irAUser() {
+        startActivity(Intent(this, UserMainActivity::class.java))
+        finish()
     }
 }

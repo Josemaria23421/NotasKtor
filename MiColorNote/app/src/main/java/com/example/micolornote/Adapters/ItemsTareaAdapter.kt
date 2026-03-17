@@ -13,8 +13,8 @@ import com.example.micolornote.Models.Nota.ItemTarea
 import com.example.micolornote.R
 
 class ItemsTareaAdapter(
-    private val onToggle: (ItemTarea) -> Unit,
-    private val onDelete: (ItemTarea) -> Unit
+    private val modificado: (ItemTarea) -> Unit,
+    private val alBorrar: (ItemTarea) -> Unit
 ) : ListAdapter<ItemTarea, ItemsTareaAdapter.TareaViewHolder>(DiffCallback()) {
 
     inner class TareaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -24,10 +24,20 @@ class ItemsTareaAdapter(
 
         fun bind(item: ItemTarea) {
             tvNombre.text = item.nombre
+
+            // Seteamos el estado
+            check.setOnCheckedChangeListener(null)
             check.isChecked = item.estaFinalizado
 
-            check.setOnClickListener { onToggle(item) }
-            btnDelete.setOnClickListener { onDelete(item) }
+            // Cuando el usuario pincha el check
+            check.setOnClickListener {
+                modificado(item)
+            }
+
+            // Cuando el usuario pincha la papelera
+            btnDelete.setOnClickListener {
+                alBorrar(item)
+            }
         }
     }
 

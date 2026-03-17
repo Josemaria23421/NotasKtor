@@ -13,11 +13,9 @@ class LoginViewModel : ViewModel() {
     //observar el resultado del login
     private val _personaLogueada = MutableLiveData<Persona?>()
     val personaLogueada: LiveData<Persona?> get() = _personaLogueada
-
     //observar errores
     private val _mensajeError = MutableLiveData<String?>()
     val mensajeError: LiveData<String?> get() = _mensajeError
-
     fun login(dni: String, clave: String) {
         viewModelScope.launch {
             try {

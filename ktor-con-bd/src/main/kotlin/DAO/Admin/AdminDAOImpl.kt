@@ -24,19 +24,33 @@ class AdminDAOImpl : AdminDAO {
     }
 
     override fun asignarTareaAutomatica(notaId: Int): Int? {
-        //falta crear la asignacion automatica se hara en base a la carga de
-        //tareas que no estan terminadas
-        return 1
+        val listaCarga = obtenerCargaTrabajo()
+
+        if (listaCarga.isEmpty()) return null
+
+        val usuarioConMenosCargaDeTrabajo = listaCarga.first().usuarioId
+
+        val sqlUpdate = "UPDATE notas SET usuario_id = ? WHERE id = ?"
+
+        Database.getConnection().use { connection ->
+            connection?.prepareStatement(sqlUpdate).use { statement ->
+                statement?.setInt(1, usuarioConMenosCargaDeTrabajo)
+                statement?.setInt(2, notaId)
+
+                val filas = statement?.executeUpdate() ?: 0
+                return if (filas > 0) usuarioConMenosCargaDeTrabajo else null
+            }
+        }
     }
 
     override fun obtenerCargaTrabajo(): List<CargaTrabajo> {
         val lista = mutableListOf<CargaTrabajo>()
 
-        val sql = " SELECT u.id, u.nombre, COUNT(n.id) AS tareas\n FROM usuarios u\n" +
-                "        LEFT JOIN notas n ON u.id = n.usuario_id\n" +
-                "        WHERE u.es_Admin = false\n" +
-                "        GROUP BY u.id, u.nombre\n" +
-                "        ORDER BY tareas DESC"
+        // Seleccionamos el usuario y contamos sus notas en una subconsulta
+        val sql = "SELECT u.id, u.username, " +
+                "(SELECT COUNT(*) FROM notas n WHERE n.usuario_id = u.id AND n.tipo = 'TAREAS') AS tareas " +
+                "FROM usuarios u " +
+                "ORDER BY tareas ASC"
 
         Database.getConnection().use { connection ->
             connection?.prepareStatement(sql).use { statement ->

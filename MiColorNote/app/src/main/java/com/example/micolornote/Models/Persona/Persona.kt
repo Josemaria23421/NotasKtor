@@ -5,6 +5,6 @@ data class Persona(
     val nombre: String,
     val password: String,
     val fotoPerfil: String?,
-    val esUsuario: Boolean,
-    val esAdmin: Boolean
+    var es_usuario: Boolean,
+    var es_admin: Boolean
 )

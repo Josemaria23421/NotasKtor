@@ -5,6 +5,6 @@ data class LoginResponse(
     val nombre: String,
     val password: String,
     val fotoPerfil: String?,
-    val esUsuario: Boolean,
-    val esAdmin: Boolean
+    val es_usuario: Boolean,
+    val es_admin: Boolean
 )

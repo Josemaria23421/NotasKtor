@@ -26,14 +26,4 @@ class DetalleNotaViewModel : ViewModel() {
         }
     }
 
-    fun eliminarNota(id: Int) {
-        viewModelScope.launch {
-            val response = notasNet.retrofit.eliminarNota(id)
-            if (response.isSuccessful) {
-                _status.value = "Nota eliminada"
-            } else {
-                _status.value = "Error al eliminar nota"
-            }
-        }
-    }
 }

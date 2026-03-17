@@ -54,49 +54,46 @@ class NotasDAOImpl : NotasDAO {
     override fun crearNota(nota: Notas, dni: String): Int {
         val obtenerUsuarioId = "SELECT id FROM usuarios WHERE dni = ?"
         val insertarNota = "INSERT INTO notas (titulo, descripcion_completa, tipo, fecha, usuario_id) VALUES (?, ?, ?, ?, ?)"
-        val obtenerUltimaNota = "SELECT MAX(id) as ultimo_id FROM notas WHERE usuario_id = ?"
+        val obtenerMaxNota = "SELECT MAX(id) as ultimaNota FROM notas"
 
         try {
             Database.getConnection().use { connection ->
-
                 connection ?: return -1
-
-                val usuarioId = connection.prepareStatement(obtenerUsuarioId).use { ps ->
-                    ps.setString(1, dni)
-                    val rs = ps.executeQuery()
-                    if (rs.next()) rs.getInt("id") else null
+                // antes de revisar, para que no falle, establecemos el usuarioId a posible null
+                // esto nos permite el hecho de que podamos aplicar el "Auto"
+                var usuarioId: Int? = null
+                if (dni != "AUTO") {
+                    usuarioId = connection.prepareStatement(obtenerUsuarioId).use { ps ->
+                        ps.setString(1, dni)
+                        val rs = ps.executeQuery()
+                        if (rs.next()) rs.getInt("id") else null
+                    }
+                    if (usuarioId == null) return -1
                 }
 
-                if (usuarioId == null) {
-                    println("Usuario no encontrado")
-                    return -1
-                }
-
-                // Insertar nota
                 connection.prepareStatement(insertarNota).use { statement ->
                     statement.setString(1, nota.titulo)
                     statement.setString(2, nota.descripcion_completa)
                     statement.setString(3, nota.tipo)
                     statement.setString(4, nota.fecha)
-                    statement.setInt(5, usuarioId)
+                    if (usuarioId != null) {
+                        statement.setInt(5, usuarioId)
+                    } else {
+                        statement.setNull(5, java.sql.Types.INTEGER)
+                    }
                     statement.executeUpdate()
                 }
 
-                //Obtener el ID máximo de ese usuario
-                connection.prepareStatement(obtenerUltimaNota).use { ps ->
-                    ps.setInt(1, usuarioId)
+                connection.prepareStatement(obtenerMaxNota).use { ps ->
                     val rs = ps.executeQuery()
                     if (rs.next()) {
-                        return rs.getInt("ultimo_id")
+                        return rs.getInt("ultimaNota")
                     }
                 }
             }
-
         } catch (e: Exception) {
-            println("ERROR SQL AL CREAR NOTA: ${e.message}")
             e.printStackTrace()
         }
-
         return -1
     }
 

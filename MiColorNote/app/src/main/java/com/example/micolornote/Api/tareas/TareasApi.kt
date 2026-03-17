@@ -1,6 +1,7 @@
 package com.example.micolornote.Api.tareas
 
 import com.example.micolornote.Models.Nota.ItemTarea
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -33,11 +34,11 @@ interface TareasApi {
     @PUT("tarea/{id}/estado")
     suspend fun cambiarEstadoTarea(
         @Path("id") id: Int, @Body estado: Boolean
-    ): Response<String>
+    ): Response<ResponseBody>
 
     // Eliminar una tarea
     @DELETE("tarea/{id}")
     suspend fun eliminarTarea(
         @Path("id") id: Int
-    ): Response<String>
+    ): Response<ResponseBody>
 }

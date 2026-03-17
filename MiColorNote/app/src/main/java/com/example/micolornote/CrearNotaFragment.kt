@@ -1,5 +1,6 @@
 package com.example.micolornote
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.* // esto importa  RadioGroup, RadioButton, LinearLayout, etc.
@@ -23,11 +24,13 @@ class CrearNotaFragment : Fragment(R.layout.fragment_crear_nota) {
         val containerItems = view.findViewById<LinearLayout>(R.id.containerItems)
         val btnAgregarItem = view.findViewById<Button>(R.id.btnAgregarItem)
         val btnGuardar = view.findViewById<Button>(R.id.btnGuardarNota)
-
-        rgTipo.setOnCheckedChangeListener { _, checkedId ->
-            if (checkedId == R.id.rbTarea) {
+        //revisar
+        rgTipo.setOnCheckedChangeListener { grupoDeBotones, idSeleccionado ->
+            if (idSeleccionado == R.id.rbTarea) {
+                grupoDeBotones.setBackgroundColor(Color.CYAN)
                 layoutContenedorTareas.visibility = View.VISIBLE
             } else {
+                grupoDeBotones.setBackgroundColor(Color.GREEN)
                 layoutContenedorTareas.visibility = View.GONE
                 containerItems.removeAllViews()
                 editTextsTareas.clear()
@@ -93,8 +96,8 @@ class CrearNotaFragment : Fragment(R.layout.fragment_crear_nota) {
         }
 
         viewModel.error.observe(viewLifecycleOwner) { error ->
-            error?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            if (error != null) {
+                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
             }
         }
     }

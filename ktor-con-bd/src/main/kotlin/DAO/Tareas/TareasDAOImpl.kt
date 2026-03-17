@@ -58,7 +58,6 @@ class TareasDAOImpl : TareasDAO {
                 return statement?.executeUpdate()!! > 0
             }
         }
-
     }
 
     override fun cambiarEstadoDeLaTarea(itemId: Int, estadoDeLaTarea: Boolean): Boolean {

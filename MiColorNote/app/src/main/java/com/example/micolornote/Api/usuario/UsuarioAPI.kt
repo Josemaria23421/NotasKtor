@@ -2,6 +2,7 @@ import com.example.micolornote.Models.Persona.Persona
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -9,9 +10,6 @@ import retrofit2.http.Path
 
 interface UsuarioAPI {
     //Ruta para todos los usuarios
-    //el response body nos esta evitando que tengamos que usar Maps de Strings
-    //osea, nos hace que el json que es enviado por el back (Ktor)
-    //nos venga en crudo, siendo el mensaje en concreto
 
     // Obtener todos los usuarios
     @GET("usuarios")
@@ -27,15 +25,14 @@ interface UsuarioAPI {
     @PUT("usuarios/{dni}/foto")
     suspend fun cambiarFotoDelUsuario(
         @Path("dni") dni: String,
-        @Body body: Map<String, String>   // { "foto": "url" }
+        @Body body: Map<String, String>
     ): Response<ResponseBody>
-
 
     // Cambiar contraseña
     @PUT("usuarios/{dni}/password")
     suspend fun cambiarPassword(
         @Path("dni") dni: String,
-        @Body body: Map<String, String>   // { "password": "nuevaClave" }
+        @Body body: Map<String, String>
     ): Response<ResponseBody>
 
     // Registrar usuario
@@ -44,4 +41,16 @@ interface UsuarioAPI {
         @Body persona: Persona
     ): Response<Map<String, String>>
 
+    //Modificar los roles de los usuarios
+    @PUT("usuarios/{dni}/roles")
+    suspend fun actualizarRoles(
+        @Path("dni") dni: String,
+        @Body persona: Persona
+    ): Response<ResponseBody>
+
+    //borrar un usuario
+    @DELETE("usuarios/{dni}")
+    suspend fun borrarUsuario(
+        @Path("dni") dni: String
+    ): Response<ResponseBody>
 }

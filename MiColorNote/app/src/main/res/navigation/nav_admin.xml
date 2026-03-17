@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_admin"
@@ -7,21 +6,34 @@
     <fragment
         android:id="@+id/adminFragment"
         android:name="com.example.micolornote.Fragments.AdminFragment"
-        android:label="Usuarios" />
+        android:label="Panel de Control">
+        <action
+            android:id="@+id/action_adminFragment_to_usuarioDetalleFragment"
+            app:destination="@id/usuarioDetalleFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_asignarTareasFragment"
+            app:destination="@id/asignarTareasFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_registro"
+            app:destination="@id/fragment_registro_usuario_Admin" />
+    </fragment>
 
-<!--    <fragment-->
-<!--        android:id="@+id/crearUsuarioFragment"-->
-<!--        android:name="com.example.micolornote.Fragments.CrearUsuarioFragment"-->
-<!--        android:label="Crear Usuario" />-->
+    <fragment
+        android:id="@+id/usuarioDetalleFragment"
+        android:name="com.example.micolornote.Fragments.UsuarioDetalleFragment"
+        android:label="Detalle del Usuario" />
 
-<!--    <fragment-->
-<!--        android:id="@+id/adminPerfil"-->
-<!--        android:name="com.example.micolornote.Fragments.PerfilFragment"-->
-<!--        android:label="Perfil" />-->
+    <fragment
+        android:id="@+id/asignarTareasFragment"
+        android:name="com.example.micolornote.Fragments.AsignarTareasFragment"
+        android:label="Nueva Tarea Asignada">
 
-<!--    <fragment-->
-<!--        android:id="@+id/notas"-->
-<!--        android:name="com.example.micolornote.Fragments.NotasFragment"-->
-<!--        android:label="Notas" />-->
-
+        <action
+            android:id="@+id/action_asignarTareasFragment_to_fragment_registro_usuario_Admin"
+            app:destination="@id/fragment_registro_usuario_Admin" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_registro_usuario_Admin"
+        android:name="com.example.micolornote.RegistroUsuarioFragment"
+        android:label="Registro de Empleados" />
 </navigation>

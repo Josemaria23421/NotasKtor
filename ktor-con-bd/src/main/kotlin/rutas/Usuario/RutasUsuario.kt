@@ -4,14 +4,13 @@ import com.example.DAO.Usuario.PersonaDAO
 import com.example.DAO.Usuario.PersonaDAOImpl
 import com.example.Modelos.USuario.Persona
 import com.example.Modelos.Auth.PersonaLogin
-import Modelos.Respuesta
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 
-fun Route.userRouting() {  //Esta ruta se incluirá en el archivo Routing.
+fun Route.userRouting() {
 
     val usuarioDAO = PersonaDAOImpl()
 
@@ -83,6 +82,33 @@ fun Route.userRouting() {  //Esta ruta se incluirá en el archivo Routing.
                 call.respond(HttpStatusCode.BadRequest, "Falta el campo 'password' en el JSON")
             }
         }
+        put("/{dni}/roles") {
+            val dni = call.parameters["dni"]
+
+            if (dni.isNullOrBlank()) {
+                call.respond(HttpStatusCode.BadRequest, "DNI inválido")
+                return@put
+            }
+
+            try {
+                // 1. Recibimos el objeto Persona completo que viene de Android
+                val personaRecibida = call.receive<Persona>()
+
+                // 2. Extraemos los booleanos (asegúrate de que en el modelo de Ktor se llamen igual)
+                // Si tu modelo Persona en Ktor usa es_admin y es_usuario:
+                val ok = usuarioDAO.actualizarRoles(dni, personaRecibida.es_admin, personaRecibida.es_usuario)
+
+                if (ok) {
+                    call.respond(HttpStatusCode.OK, "Roles actualizados")
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "Usuario no encontrado")
+                }
+            } catch (e: Exception) {
+                // Imprime el error en la consola de Ktor para ver si es un fallo de serialización
+                println("Error en PUT roles: ${e.message}")
+                call.respond(HttpStatusCode.InternalServerError, "Error: ${e.message}")
+            }
+        }
         post("/registrar") {
             try {
                 val persona = call.receive<Persona>()
@@ -91,8 +117,8 @@ fun Route.userRouting() {  //Esta ruta se incluirá en el archivo Routing.
                     nombre = persona.nombre,
                     password = persona.password,
                     fotoPerfil = persona.fotoPerfil,
-                    esUsuario = true,
-                    esAdmin = false
+                    es_usuario = true,
+                    es_admin  = false
                 )
                 val exito = usuarioDAO.crearUsuario(personaACrear)
 
@@ -106,5 +132,25 @@ fun Route.userRouting() {  //Esta ruta se incluirá en el archivo Routing.
                 call.respond(HttpStatusCode.BadRequest, "Error en los datos enviados: ${e.message}")
             }
         }
+        delete("/{dni}") {
+            val dni = call.parameters["dni"]
+
+            if (dni.isNullOrBlank()) {
+                call.respond(HttpStatusCode.BadRequest, "DNI inválido")
+                return@delete
+            }
+            try {
+                val eliminado = usuarioDAO.borrarUsuario(dni)
+
+                if (eliminado) {
+                    call.respond(HttpStatusCode.OK, mapOf("mensaje" to "Usuario eliminado correctamente"))
+                } else {
+                    call.respond(HttpStatusCode.NotFound, mapOf("mensaje" to "No se encontró el usuario con DNI: $dni"))
+                }
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.Conflict, mapOf("mensaje" to "No se puede borrar el usuario: tiene datos vinculados"))
+            }
+        }
+
     }
 }

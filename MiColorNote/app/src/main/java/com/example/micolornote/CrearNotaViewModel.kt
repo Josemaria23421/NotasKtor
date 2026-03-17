@@ -68,7 +68,7 @@ class CrearNotaViewModel : ViewModel() {
 
     //el siguiente metodo esta sacado de chatgpt -> es un metodo que guarda la fecha del dia de hoy
     //funciona como un sysdate (EN SQL)
-    private fun obtenerFechaActual(): String {
+    fun obtenerFechaActual(): String {
         val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
         return sdf.format(java.util.Date())
     }

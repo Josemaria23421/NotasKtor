@@ -32,8 +32,8 @@ class RegisterActivity : AppCompatActivity() {
                     nombre = nombre,
                     password = pass,
                     fotoPerfil = null,
-                    esUsuario = true,
-                    esAdmin = false
+                    es_usuario = true,
+                    es_admin = false
                 )
                 registerViewModel.registro(nuevaPersona)
             }
@@ -55,8 +55,8 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         registerViewModel.mensajeError.observe(this) { error ->
-            error?.let {
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+            if (error != null) {
+                Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
             }
         }
     }

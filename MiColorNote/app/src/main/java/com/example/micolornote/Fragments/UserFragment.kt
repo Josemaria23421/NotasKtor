@@ -1,5 +1,6 @@
 package com.example.micolornote.Fragments
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -53,8 +54,8 @@ class UserFragment : Fragment(R.layout.fragment_user) {
 
         // Observar errores
         userViewModel.error.observe(viewLifecycleOwner) { error ->
-            error?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            if (error != null) {
+                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -64,16 +65,24 @@ class UserFragment : Fragment(R.layout.fragment_user) {
         userViewModel.cargarNotas(dni)
     }
 
-    // El Alert para borrar manteniendo el estilo de la app
     private fun mostrarDialogoConfirmacion(nota: Notas) {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Eliminar Nota")
-            .setMessage("¿Estás seguro de que quieres borrar \"${nota.titulo}\"?")
-            .setPositiveButton("Sí, eliminar") { _, _ ->
-                // Le pasamos el marrón al ViewModel
+        val respuestaUsuario = { dialogo: DialogInterface, botonId: Int ->
+            if (botonId == DialogInterface.BUTTON_POSITIVE) {
+                // El usuario pulsa "Sí, eliminar"
+                Toast.makeText(context, "Operacion completada con exito, nota borrada ${nota.id}", Toast.LENGTH_SHORT).show()
                 userViewModel.borrarNota(nota.id)
+
+            } else if (botonId == DialogInterface.BUTTON_NEGATIVE) {
+                // El usuario pulsa "Cancelar"
+                Toast.makeText(context, "Operacion cancelada", Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("Cancelar", null)
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Confirmacion De Actuacion")
+            .setMessage("¿Borrar nota?")
+            .setPositiveButton("Borrar Nota", respuestaUsuario)
+            .setNegativeButton("No Borrar Nota", respuestaUsuario)
             .show()
     }
 }

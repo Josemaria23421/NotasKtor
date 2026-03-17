@@ -16,8 +16,8 @@ class PersonaDAOImpl : PersonaDAO {
                             dni = resultSet.getString("dni"),
                             nombre = resultSet.getString("username"),
                             password = resultSet.getString("password"),
-                            esUsuario = resultSet.getBoolean("es_usuario"),
-                            esAdmin = resultSet.getBoolean("es_admin"),
+                            es_usuario = resultSet.getBoolean("es_usuario"),
+                            es_admin = resultSet.getBoolean("es_admin"),
                             fotoPerfil = resultSet.getString("foto_perfil")
                         )
                     } else {
@@ -80,8 +80,8 @@ class PersonaDAOImpl : PersonaDAO {
                             statement?.setString(1, persona.nombre)
                             statement?.setString(2, persona.password)
                             statement?.setString(3, persona.fotoPerfil)
-                            statement?.setBoolean(4, persona.esUsuario)
-                            statement?.setBoolean(5, persona.esAdmin)
+                            statement?.setBoolean(4, persona.es_usuario)
+                            statement?.setBoolean(5, persona.es_admin)
                             statement?.setString(6, persona.dni)
                             statement?.executeUpdate()
 
@@ -139,8 +139,8 @@ class PersonaDAOImpl : PersonaDAO {
                                 dni = resultSet.getString("dni"),
                                 nombre = resultSet.getString("username"),
                                 password = resultSet.getString("password"),
-                                esUsuario = resultSet.getBoolean("es_usuario"),
-                                esAdmin = resultSet.getBoolean("es_admin"),
+                                es_usuario = resultSet.getBoolean("es_usuario"),
+                                es_admin = resultSet.getBoolean("es_admin"),
                                 fotoPerfil = resultSet.getString("foto_perfil")
                             )
                         )

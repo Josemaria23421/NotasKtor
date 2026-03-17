@@ -20,7 +20,7 @@ class UserViewModel : ViewModel() {
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> get() = _error
 
-    // 1. CARGAR NOTAS
+    // cargamos las notas del usuario
     fun cargarNotas(dni: String) {
         viewModelScope.launch {
             try {
@@ -38,13 +38,15 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    // borrar una nota
     fun borrarNota(id: Int) {
         viewModelScope.launch {
             try {
                 val response = notasNet.retrofit.eliminarNota(id)
 
                 if (response.isSuccessful) {
-                    UsuarioHolder.dni?.let { dni ->
+                    val dni = UsuarioHolder.dni
+                    if (dni != null) {
                         cargarNotas(dni)
                     }
                 } else {

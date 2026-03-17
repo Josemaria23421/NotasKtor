@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="32dp">
+
+        <EditText
+            android:id="@+id/etTituloTarea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Título de la nota"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/etDescTarea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Descripción general"
+            android:gravity="top"
+            android:minLines="2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LISTA DE SUBTAREAS:"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <Button
+                android:id="@+id/btnAgregarItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="+ Añadir nueva subtarea"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/containerItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCCCCC"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Asignación de usuario:"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/rgAsignacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginVertical="8dp">
+
+            <RadioButton
+                android:id="@+id/rbManual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="Manual" />
+
+            <RadioButton
+                android:id="@+id/rbAutomatico"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Auto" />
+        </RadioGroup>
+
+        <Spinner
+            android:id="@+id/spinnerUsuarios"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="20dp" />
+
+        <Button
+            android:id="@+id/btnCrearYAsignar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="Guardar" />
+
+    </LinearLayout>
+</ScrollView>

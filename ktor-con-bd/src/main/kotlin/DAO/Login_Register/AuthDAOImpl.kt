@@ -20,8 +20,8 @@
                             nombre = rs.getString("username"),
                             password  = rs.getString("password"),
                             fotoPerfil = rs.getString("foto_perfil"),
-                            esUsuario = rs.getBoolean("es_usuario"),
-                            esAdmin = rs.getBoolean("es_admin")
+                            es_usuario = rs.getBoolean("es_usuario"),
+                            es_admin = rs.getBoolean("es_admin")
                         )
                     }
                 }

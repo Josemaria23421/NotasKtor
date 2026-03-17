@@ -1,6 +1,5 @@
 package com.example.micolornote.Models.Nota
 
-import com.google.gson.annotations.SerializedName
 
 data class Notas(
     val id: Int,

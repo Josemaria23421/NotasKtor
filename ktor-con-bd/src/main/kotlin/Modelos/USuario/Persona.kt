@@ -9,7 +9,7 @@ data class Persona(
     val password: String,
     val fotoPerfil: String? = null, // Para la foto
     //Estas variables reflejan el rol con el que nos encontramos, pudiendo ser usuarioNormal y adminitrador
-    val esUsuario: Boolean,
-    val esAdmin: Boolean
+    val es_usuario: Boolean,
+    val es_admin: Boolean
 
 )

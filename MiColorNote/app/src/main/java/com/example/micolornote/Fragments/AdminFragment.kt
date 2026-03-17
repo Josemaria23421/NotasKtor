@@ -33,7 +33,6 @@ class AdminFragment : Fragment(R.layout.fragment_admin) {
             adapter.submitList(lista)
         }
 
-        // Esto carga los datos reales
         viewModel.cargarUsuarios()
     }
 }

@@ -1,5 +1,7 @@
 package com.example.rutas.Notas
 
+import com.example.DAO.Admin.AdminDAO
+import com.example.DAO.Admin.AdminDAOImpl
 import com.example.DAO.Notas.NotasDAOImpl
 import com.example.Modelos.Notas.ActualizarNotaRequest
 import com.example.Modelos.Notas.CrearNotaRequest
@@ -17,6 +19,7 @@ import io.ktor.server.routing.route
 fun Route.rutasNotas() {
 
     val notasDAO = NotasDAOImpl()
+    val adminDAO = AdminDAOImpl()
 
     route("/notas") {
 
@@ -38,6 +41,10 @@ fun Route.rutasNotas() {
             if (notaId <= 0) {
                 call.respond(HttpStatusCode.BadRequest, "No se pudo crear la nota")
                 return@post
+            }
+
+            if (request.tipo == "TAREAS" && request.dni == "AUTO") {
+                adminDAO.asignarTareaAutomatica(notaId)
             }
 
             if (request.tipo == "TAREAS" && request.items != null) {
