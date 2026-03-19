@@ -8,10 +8,6 @@
         android:icon="@android:drawable/ic_menu_edit"
         android:title="Notas" />
     <item
-        android:id="@+id/user_configuracion"
-        android:icon="@android:drawable/ic_menu_preferences"
-        android:title="Configuración" />
-    <item
         android:id="@+id/fragment_crear_nota"
         android:icon="@android:drawable/ic_menu_add"
         android:title="Crear" />
