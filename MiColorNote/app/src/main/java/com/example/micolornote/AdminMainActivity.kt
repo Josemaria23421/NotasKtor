@@ -1,8 +1,10 @@
 package com.example.micolornote.Activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -39,10 +41,25 @@ class AdminMainActivity : AppCompatActivity() {
 
         // MENU HAMBURGUESA / LATERAL
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-        binding.navigationView.setupWithNavController(navController)
-
+        binding.navigationView.setNavigationItemSelectedListener { item ->
+            if (item.itemId == R.id.action_logout) {
+                mostrarDialogoLogOut()
+            } else {
+                if (NavigationUI.onNavDestinationSelected(item, navController)) {
+                    binding.drawerLayout.closeDrawers()
+                }
+            }
+            true
+        }
         // BOTTOM NAV
-        binding.bottomNavAdmin.setupWithNavController(navController)
+        binding.bottomNavAdmin.setOnItemSelectedListener { item ->
+            if (item.itemId == R.id.action_logout) {
+                mostrarDialogoLogOut()
+            } else {
+                NavigationUI.onNavDestinationSelected(item, navController)
+            }
+            true
+        }
     }
 
     // MENU ⋮ (TRES PUNTOS)
@@ -52,6 +69,34 @@ class AdminMainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item)
+        if (item.itemId == R.id.action_logout) {
+            mostrarDialogoLogOut()
+            return true
+        }
+        return NavigationUI.onNavDestinationSelected(
+            item,
+            navController
+        ) || super.onOptionsItemSelected(item)
+    }
+
+    private fun mostrarDialogoLogOut() {
+        val respuestaUsuario = { dialogo: android.content.DialogInterface, botonId: Int ->
+            if (botonId == android.content.DialogInterface.BUTTON_POSITIVE) {
+                // El usuario pulsa "Sí"
+                irALogin()
+            }
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle("Cerrar sesion")
+            .setMessage("Seguro quiere cerrar sesion?")
+            .setPositiveButton("SI", respuestaUsuario)
+            .setNegativeButton("CANCELAR", respuestaUsuario)
+            .show()
+    }
+
+    private fun irALogin() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 }
